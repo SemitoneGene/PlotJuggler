@@ -7,16 +7,16 @@
 #include "mainwindow.h"
 #include <iostream>
 #include <QApplication>
-#include <QSplashScreen>
-#include <QThread>
 #include <QCommandLineParser>
-#include <QDesktopWidget>
+#include <QDir>
 #include <QFontDatabase>
-#include <QSettings>
+#include <QJsonDocument>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
-#include <QJsonDocument>
-#include <QDir>
+#include <QScreen>
+#include <QSettings>
+#include <QSplashScreen>
+#include <QThread>
 #include <QUuid>
 
 #include "PlotJuggler/transform_function.h"
@@ -132,7 +132,7 @@ std::vector<std::string> MergeArguments(const std::vector<std::string>& args)
 {
 #ifdef PJ_DEFAULT_ARGS
   auto default_cmdline_args =
-      QString(PJ_DEFAULT_ARGS).split(" ", QString::SkipEmptyParts);
+      QString(PJ_DEFAULT_ARGS).split(" ", Qt::SkipEmptyParts);
 
   std::vector<std::string> new_args;
   new_args.push_back(args.front());
@@ -395,11 +395,9 @@ int main(int argc, char* argv[])
       main_pixmap = getFunnySplashscreen();
     }
     QSplashScreen splash(main_pixmap, Qt::WindowStaysOnTopHint);
-    QDesktopWidget* desktop = QApplication::desktop();
-    const int scrn = desktop->screenNumber();
-    const QPoint currentDesktopsCenter = desktop->availableGeometry(scrn).center();
+    QScreen* currentScreen = QGuiApplication::primaryScreen();
+    const QPoint currentDesktopsCenter = currentScreen->availableGeometry().center();
     splash.move(currentDesktopsCenter - splash.rect().center());
-
     splash.show();
     app.processEvents();
 

@@ -144,7 +144,7 @@ FunctionEditorWidget::FunctionEditorWidget(PlotDataMapRef& plotMapData,
   ui->lineEditTab2Filter->installEventFilter(this);
 
   auto preview_layout = new QHBoxLayout(ui->framePlotPreview);
-  preview_layout->setMargin(6);
+  preview_layout->setContentsMargins(6, 6, 6, 6);
   preview_layout->addWidget(_preview_widget);
 
   _preview_widget->setContextMenuEnabled(false);
@@ -894,6 +894,13 @@ void FunctionEditorWidget::on_pushButtonHelp_clicked()
   dialog->exec();
 }
 
+QString wildcardToRegex(const QString &wildcard) {
+    QString regex = QRegularExpression::escape(wildcard);
+    regex.replace("\\*", ".*");
+    regex.replace("\\?", ".");
+    return regex;
+}
+
 void FunctionEditorWidget::onLineEditTab2FilterChanged()
 {
   QString filter_text = ui->lineEditTab2Filter->text();
@@ -901,16 +908,17 @@ void FunctionEditorWidget::onLineEditTab2FilterChanged()
 
   if (ui->radioButtonRegExp->isChecked() || ui->radioButtonWildcard->isChecked())
   {
-    QRegExp rx(filter_text);
+    QRegularExpression rx(filter_text);
     if (ui->radioButtonWildcard->isChecked())
     {
-      rx.setPatternSyntax(QRegExp::Wildcard);
+      //rx.setPatternOptions(QRegularExpression::WildcardOption);
     }
 
     for (const auto& [name, plotdata] : _plot_map_data.numeric)
     {
       auto qname = QString::fromStdString(name);
-      if (rx.exactMatch(qname))
+      const auto match = rx.match(qname);
+      if (match.hasMatch())
       {
         ui->listBatchSources->addItem(qname);
       }
@@ -918,7 +926,7 @@ void FunctionEditorWidget::onLineEditTab2FilterChanged()
   }
   else
   {
-    QStringList spaced_items = filter_text.split(' ', QString::SkipEmptyParts);
+    QStringList spaced_items = filter_text.split(' ', Qt::SkipEmptyParts);
     for (const auto& [name, plotdata] : _plot_map_data.numeric)
     {
       bool show = true;

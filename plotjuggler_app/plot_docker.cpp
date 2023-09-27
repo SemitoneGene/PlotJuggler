@@ -6,7 +6,7 @@
 
 #include "plot_docker.h"
 #include "plotwidget_editor.h"
-#include "Qads/DockSplitter.h"
+#include "Qt-Advanced-Docking-System/src/DockSplitter.h"
 #include <QPushButton>
 #include <QBoxLayout>
 #include <QMouseEvent>
@@ -169,7 +169,10 @@ void PlotDocker::restoreSplitter(QDomElement elem, DockWidget* widget)
         (orientation == Qt::Horizontal) ? widgets[i]->width() : widgets[i]->height();
   }
 
-  auto sizes_str = elem.attribute("sizes").splitRef(";", QString::SkipEmptyParts);
+  QString attribute = elem.attribute("sizes");
+  QStringView view(attribute);
+  auto sizes_str = view.split(QStringView(u";"), Qt::SkipEmptyParts);
+
   QList<int> sizes;
 
   for (int i = 0; i < splitter_count; i++)
@@ -337,7 +340,7 @@ DockWidget::DockWidget(PlotDataMapRef& datamap, QWidget* parent)
     this->undoableChange();
   });
 
-  this->layout()->setMargin(10);
+  this->layout()->setContentsMargins(10, 10, 10, 10);
 }
 
 DockWidget::~DockWidget()

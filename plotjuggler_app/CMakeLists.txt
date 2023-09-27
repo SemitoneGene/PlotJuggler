@@ -4,9 +4,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include_directories( ./ ../  ../include )
 
-QT5_ADD_RESOURCES (RES_SRC  resource.qrc )
+QT6_ADD_RESOURCES (RES_SRC  resource.qrc )
 
-QT5_WRAP_UI ( UI_SRC
+QT6_WRAP_UI ( UI_SRC
     aboutdialog.ui
     mainwindow.ui
 
@@ -107,12 +107,12 @@ endif()
 
 target_link_libraries(plotjuggler
     ${QT_LINK_LIBRARIES}
-    colorwidgets
-    lua_static
-    qt_advanced_docking
-    plotjuggler_base
-    plotjuggler_qwt
+    qt6advanceddocking
     QCodeEditor
+    QtColorWidgets
+    lua_static
+    plotjuggler_base
+    plotjuggler_qwt    
     )
 
 if(COMPILING_WITH_CATKIN)

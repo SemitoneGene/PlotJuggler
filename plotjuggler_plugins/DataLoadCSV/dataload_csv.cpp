@@ -8,6 +8,7 @@
 #include <QDateTime>
 #include <QInputDialog>
 #include <QPushButton>
+#include <QString>
 #include "QSyntaxStyle"
 #include "datetimehelp.h"
 
@@ -267,10 +268,10 @@ void DataLoadCSV::parseHeader(QFile& file, std::vector<std::string>& column_name
   _model->setRowCount( lines.count() );
   for(int row = 0; row < lines.count(); row ++)
   {
-    QVector<QStringRef> lineToken = lines[row].splitRef(_delimiter);
+    QVector<QString> lineToken = lines[row].split(_delimiter);
     for (int j = 0; j < lineToken.size(); j++)
     {
-      QString value = lineToken[j].toString();
+      const auto value = lineToken[j];
       if( auto item = _model->item(row, j) )
       {
         item->setText(value);

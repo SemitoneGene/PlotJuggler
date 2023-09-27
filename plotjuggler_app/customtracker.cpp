@@ -197,7 +197,7 @@ void CurveTracker::setPosition(const QPointF& position)
   }
   mark_text.setBorderPen(QColor(Qt::transparent));
 
-  QColor background_color = _plot->palette().background().color();
+  QColor background_color = _plot->palette().color(QPalette::Window);
   background_color.setAlpha(180);
   mark_text.setBackgroundBrush(background_color);
   mark_text.setText(text_marker_info);

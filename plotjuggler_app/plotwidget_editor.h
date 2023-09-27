@@ -10,8 +10,8 @@
 #include <QDialog>
 #include <QKeyEvent>
 #include "plotwidget.h"
-#include "color_wheel.hpp"
-#include "color_preview.hpp"
+#include "QtColorWidgets/color_wheel.hpp"
+#include "QtColorWidgets/color_preview.hpp"
 #include "PlotJuggler/transform_function.h"
 
 namespace Ui
@@ -26,7 +26,7 @@ class EditorRowWidget : public QWidget
 public:
   EditorRowWidget(QString text, QColor color);
 
-  void enterEvent(QEvent* ev) override;
+  void enterEvent(QEnterEvent* ev) override;
   void leaveEvent(QEvent* ev) override;
 
   QString text() const;
@@ -63,8 +63,6 @@ private slots:
   void on_radioLines_toggled(bool checked);
 
   void on_radioPoints_toggled(bool checked);
-
-  void on_radioBoth_toggled(bool checked);
 
   void on_checkBoxMax_toggled(bool checked);
 

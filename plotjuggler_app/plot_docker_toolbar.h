@@ -7,13 +7,13 @@
 #ifndef PLOT_DOCKER_TOOLBAR_H
 #define PLOT_DOCKER_TOOLBAR_H
 
-#include "Qads/DockManager.h"
-#include "Qads/DockWidget.h"
-#include "Qads/DockAreaWidget.h"
-#include "Qads/DockAreaTitleBar.h"
-#include "Qads/DockAreaTabBar.h"
-#include "Qads/FloatingDockContainer.h"
-#include "Qads/DockComponentsFactory.h"
+#include "Qt-Advanced-Docking-System/src/DockManager.h"
+#include "Qt-Advanced-Docking-System/src/DockWidget.h"
+#include "Qt-Advanced-Docking-System/src/DockAreaWidget.h"
+#include "Qt-Advanced-Docking-System/src/DockAreaTitleBar.h"
+#include "Qt-Advanced-Docking-System/src/DockAreaTabBar.h"
+#include "Qt-Advanced-Docking-System/src/FloatingDockContainer.h"
+#include "Qt-Advanced-Docking-System/src/DockComponentsFactory.h"
 #include "ui_plot_docker_toolbar.h"
 
 class DockToolbar : public QWidget
@@ -65,7 +65,7 @@ private:
   void mousePressEvent(QMouseEvent* ev) override;
   void mouseReleaseEvent(QMouseEvent* ev) override;
   void mouseMoveEvent(QMouseEvent* ev) override;
-  void enterEvent(QEvent*) override;
+  void enterEvent(QEnterEvent*) override;
   void leaveEvent(QEvent*) override;
 
   ads::CDockWidget* _parent;

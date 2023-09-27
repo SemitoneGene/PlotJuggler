@@ -54,7 +54,7 @@ DialogMCAP::DialogMCAP(const std::unordered_map<int, mcap::ChannelPtr> &channels
     }
     row++;
   }
-  ui->tableWidget->sortByColumn(0);
+  ui->tableWidget->sortByColumn(0, Qt::AscendingOrder);
 }
 
 DialogMCAP::~DialogMCAP()

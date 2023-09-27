@@ -19,7 +19,7 @@ if(MOSQUITTO_FOUND)
     add_definitions(${QT_DEFINITIONS})
     add_definitions(-DQT_PLUGIN)
 
-    QT5_WRAP_UI ( UI_SRC  datastream_mqtt.ui  )
+    QT6_WRAP_UI ( UI_SRC  datastream_mqtt.ui  )
 
     SET( SRC
         datastream_mqtt.h
@@ -33,9 +33,9 @@ if(MOSQUITTO_FOUND)
     add_library(DataStreamMQTT_Mosquitto SHARED ${SRC} ${UI_SRC}  )
 
     target_link_libraries(DataStreamMQTT_Mosquitto
-        ${Qt5Widgets_LIBRARIES}
-        Qt5::Network
-        Qt5::Svg
+        Qt6::Widgets
+        Qt6::Network
+        Qt6::Svg
         ${MOSQUITTO_LIBRARIES}
         plotjuggler_base
         )

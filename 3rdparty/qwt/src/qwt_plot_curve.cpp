@@ -451,22 +451,6 @@ void QwtPlotCurve::drawCurve( QPainter* painter, int style,
         case Dots:
             drawDots( painter, xMap, yMap, canvasRect, from, to );
             break;
-        case LinesAndDots: {
-          if (testCurveAttribute(Fitted)) {
-            from = 0;
-            to = dataSize() - 1;
-          }
-          drawLines(painter, xMap, yMap, canvasRect, from, to);
-
-          QPen prev_pen = painter->pen();
-          QPen new_pen = prev_pen;
-          new_pen.setWidth(prev_pen.width() * 3);
-
-          painter->setPen(new_pen);
-          drawDots(painter, xMap, yMap, canvasRect, from, to);
-          painter->setPen(prev_pen);
-        } break;
-
         case NoCurve:
         default:
             break;
@@ -685,7 +669,7 @@ void QwtPlotCurve::drawDots( QPainter* painter,
     {
         mapper.setFlag( QwtPointMapper::WeedOutPoints, false );
 
-        QPolygonF points = mapper.toPointsF(
+        QPolygonF points = mapper.toPolygonF(
             xMap, yMap, data(), from, to );
 
         QwtPainter::drawPoints( painter, points );
@@ -1064,7 +1048,7 @@ double QwtPlotCurve::baseline() const
    \note closestPoint() implements a dumb algorithm, that iterates
         over all points
  */
-int QwtPlotCurve::closestPoint( const QPoint& pos, double* dist ) const
+int QwtPlotCurve::closestPoint( const QPointF& pos, double* dist ) const
 {
     const size_t numSamples = dataSize();
 

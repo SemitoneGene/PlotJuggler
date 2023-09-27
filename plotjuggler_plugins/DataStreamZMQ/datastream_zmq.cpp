@@ -82,24 +82,25 @@ bool DataStreamZMQ::start(QStringList*)
 
   ParserFactoryPlugin::Ptr parser_creator;
 
-  connect(dialog->ui->comboBoxProtocol,
-          qOverload<const QString&>(&QComboBox::currentIndexChanged), this,
-          [&](const QString& selected_protocol) {
+connect(dialog->ui->comboBoxProtocol,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this, [&, this](int index) {
             if (parser_creator)
             {
-              if (auto prev_widget = parser_creator->optionsWidget())
-              {
-                prev_widget->setVisible(false);
-              }
+                if (auto prev_widget = parser_creator->optionsWidget())
+                {
+                    prev_widget->setVisible(false);
+                }
             }
+
+            const auto selected_protocol = dialog->ui->comboBoxProtocol->itemText(index);
             parser_creator = parserFactories()->at(selected_protocol);
 
             if (auto widget = parser_creator->optionsWidget())
             {
-              widget->setVisible(true);
+                widget->setVisible(true);
             }
-          });
-
+        });
   dialog->ui->comboBoxProtocol->setCurrentText(protocol);
 
   int res = dialog->exec();
@@ -197,7 +198,7 @@ bool DataStreamZMQ::parseMessage(const PJ::MessageRef& msg, double& timestamp)
 
 void DataStreamZMQ::parseTopicFilters(const QString& topic_filters)
 {
-  const QRegExp regex("(,{0,1}\\s+)|(;\\s*)");
+  const QRegularExpression regex("(,{0,1}\\s+)|(;\\s*)");
 
   if (topic_filters.trimmed().size() != 0)
   {

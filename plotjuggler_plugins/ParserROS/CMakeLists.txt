@@ -12,7 +12,7 @@ add_library(ParserROS1 SHARED
     ros1_parser.h )
 
 target_link_libraries(ParserROS1
-    ${Qt5Widgets_LIBRARIES}
+    Qt6::Widgets
     rosx_introspection
     plotjuggler_base)
 
@@ -21,7 +21,7 @@ add_library(ParserROS2 SHARED
     ros2_parser.h )
 
 target_link_libraries(ParserROS2
-    ${Qt5Widgets_LIBRARIES}
+    Qt6::Widgets
     rosx_introspection
     plotjuggler_base)
 

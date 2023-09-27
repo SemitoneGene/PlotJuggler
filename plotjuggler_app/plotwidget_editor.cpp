@@ -43,7 +43,7 @@ PlotwidgetEditor::PlotwidgetEditor(PlotWidget* plotwidget, QWidget* parent)
   auto layout = new QVBoxLayout();
   ui->framePlotPreview->setLayout(layout);
   layout->addWidget(_plotwidget);
-  layout->setMargin(6);
+  layout->setContentsMargins(6, 6, 6, 6);
 
   _plotwidget->zoomOut(false);
 
@@ -142,7 +142,7 @@ void PlotwidgetEditor::onColorChanged(QColor c)
 void PlotwidgetEditor::setupColorWidget()
 {
   auto wheel_layout = new QVBoxLayout();
-  wheel_layout->setMargin(0);
+  wheel_layout->setContentsMargins(0, 0, 0, 0);
   wheel_layout->setSpacing(5);
   ui->widgetWheel->setLayout(wheel_layout);
   _color_wheel = new color_widgets::ColorWheel(this);
@@ -296,14 +296,6 @@ void PlotwidgetEditor::on_radioPoints_toggled(bool checked)
   }
 }
 
-void PlotwidgetEditor::on_radioBoth_toggled(bool checked)
-{
-  if (checked)
-  {
-    _plotwidget->changeCurvesStyle(PlotWidgetBase::LINES_AND_DOTS);
-  }
-}
-
 void PlotwidgetEditor::on_radioSticks_toggled(bool checked)
 {
   if (checked)
@@ -403,7 +395,7 @@ EditorRowWidget::EditorRowWidget(QString text, QColor color) : QWidget()
           [this]() { emit deleteRow(this); });
 }
 
-void EditorRowWidget::enterEvent(QEvent* ev)
+void EditorRowWidget::enterEvent(QEnterEvent* ev)
 {
   _delete_button->setHidden(false);
   _empty_spacer->setHidden(true);

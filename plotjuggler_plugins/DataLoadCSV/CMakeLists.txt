@@ -4,7 +4,7 @@ include_directories(  ../ )
 add_definitions(${QT_DEFINITIONS})
 add_definitions(-DQT_PLUGIN)
 
-QT5_WRAP_UI ( UI_SRC
+QT6_WRAP_UI ( UI_SRC
     dataload_csv.ui
     datetimehelp.ui
     )
@@ -16,8 +16,9 @@ SET( SRC
 
 add_library(DataLoadCSV SHARED ${SRC} ${UI_SRC}  )
 target_link_libraries(DataLoadCSV
-    ${Qt5Widgets_LIBRARIES}
-    ${Qt5Xml_LIBRARIES}
+    Qt6::Widgets
+    Qt6::Svg
+    Qt6::Xml
     plotjuggler_base
     QCodeEditor)
 

@@ -6,7 +6,7 @@ add_definitions(-DQT_PLUGIN)
 
 add_subdirectory(KissFFT)
 
-QT5_WRAP_UI ( UI_SRC
+QT6_WRAP_UI ( UI_SRC
     toolbox_FFT.ui
     )
 
@@ -16,8 +16,9 @@ add_library(ToolboxFFT SHARED
     ${UI_SRC}  )
 
 target_link_libraries(ToolboxFFT
-    ${Qt5Widgets_LIBRARIES}
-    ${Qt5Xml_LIBRARIES}
+    Qt6::Widgets
+    Qt6::Svg
+    Qt6::Xml
     kissfft
     plotjuggler_base
     plotjuggler_qwt)

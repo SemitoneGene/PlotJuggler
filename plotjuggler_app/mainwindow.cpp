@@ -30,7 +30,6 @@
 #include <QScrollBar>
 #include <QSettings>
 #include <QStringListModel>
-#include <QStringRef>
 #include <QThread>
 #include <QTextStream>
 #include <QWindow>
@@ -70,10 +69,10 @@
 MainWindow::MainWindow(const QCommandLineParser& commandline_parser, QWidget* parent)
   : QMainWindow(parent)
   , ui(new Ui::MainWindow)
-  , _undo_shortcut(QKeySequence(Qt::CTRL + Qt::Key_Z), this)
-  , _redo_shortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Z), this)
+  , _undo_shortcut(QKeySequence(Qt::CTRL | Qt::Key_Z), this)
+  , _redo_shortcut(QKeySequence(Qt::CTRL | Qt::SHIFT | Qt::Key_Z), this)
   , _fullscreen_shortcut(Qt::Key_F10, this)
-  , _streaming_shortcut(QKeySequence(Qt::CTRL + Qt::Key_Space), this)
+  , _streaming_shortcut(QKeySequence(Qt::CTRL | Qt::Key_Space), this)
   , _playback_shotcut(Qt::Key_Space, this)
   , _minimized(false)
   , _active_streamer_plugin(nullptr)
@@ -93,7 +92,7 @@ MainWindow::MainWindow(const QCommandLineParser& commandline_parser, QWidget* pa
   if (commandline_parser.isSet("enabled_plugins"))
   {
     _enabled_plugins =
-        commandline_parser.value("enabled_plugins").split(";", QString::SkipEmptyParts);
+        commandline_parser.value("enabled_plugins").split(";", Qt::SkipEmptyParts);
     // Treat the command-line parameter  '--enabled_plugins *' to mean all plugings are
     // enabled
     if ((_enabled_plugins.size() == 1) && (_enabled_plugins.contains("*")))
@@ -104,7 +103,7 @@ MainWindow::MainWindow(const QCommandLineParser& commandline_parser, QWidget* pa
   if (commandline_parser.isSet("disabled_plugins"))
   {
     _disabled_plugins =
-        commandline_parser.value("disabled_plugins").split(";", QString::SkipEmptyParts);
+        commandline_parser.value("disabled_plugins").split(";", Qt::SkipEmptyParts);
   }
 
   _curvelist_widget = new CurveListPanel(_mapped_plot_data, _transform_functions, this);
@@ -240,7 +239,7 @@ MainWindow::MainWindow(const QCommandLineParser& commandline_parser, QWidget* pa
 
   //------------ Load plugins -------------
   auto plugin_extra_folders =
-      commandline_parser.value("plugin_folders").split(";", QString::SkipEmptyParts);
+      commandline_parser.value("plugin_folders").split(";", Qt::SkipEmptyParts);
 
   _default_streamer = commandline_parser.value("start_streamer");
 
@@ -344,7 +343,7 @@ MainWindow::MainWindow(const QCommandLineParser& commandline_parser, QWidget* pa
   forEachWidget([&](PlotWidget* plot) { plot->configureTracker(_tracker_param); });
 
   auto editor_layout = new QVBoxLayout();
-  editor_layout->setMargin(0);
+  editor_layout->setContentsMargins(0, 0, 0, 0);
   ui->formulaPage->setLayout(editor_layout);
   _function_editor =
       new FunctionEditorWidget(_mapped_plot_data, _transform_functions, this);
@@ -511,11 +510,11 @@ void MainWindow::initializeActions()
   connect(&_fullscreen_shortcut, &QShortcut::activated, this,
           &MainWindow::onActionFullscreenTriggered);
 
-  QShortcut* open_menu_shortcut = new QShortcut(QKeySequence(Qt::ALT + Qt::Key_F), this);
+  QShortcut* open_menu_shortcut = new QShortcut(QKeySequence(Qt::ALT | Qt::Key_F), this);
   connect(open_menu_shortcut, &QShortcut::activated,
           [this]() { ui->menuFile->exec(ui->menuBar->mapToGlobal(QPoint(0, 25))); });
 
-  QShortcut* open_help_shortcut = new QShortcut(QKeySequence(Qt::ALT + Qt::Key_H), this);
+  QShortcut* open_help_shortcut = new QShortcut(QKeySequence(Qt::ALT | Qt::Key_H), this);
   connect(open_help_shortcut, &QShortcut::activated,
           [this]() { ui->menuHelp->exec(ui->menuBar->mapToGlobal(QPoint(230, 25))); });
 
@@ -2065,7 +2064,7 @@ bool MainWindow::loadLayoutFromFile(QString filename)
     QDomElement datasources_elem = datafile_elem.firstChildElement("selected_"
                                                                    "datasources");
     QString topics_list = datasources_elem.attribute("value");
-    info.selected_datasources = topics_list.split(";", QString::SkipEmptyParts);
+    info.selected_datasources = topics_list.split(";", Qt::SkipEmptyParts);
 
     auto plugin_elem = datafile_elem.firstChildElement("plugin");
     info.plugin_config.appendChild(info.plugin_config.importNode(plugin_elem, true));
@@ -2512,7 +2511,7 @@ void MainWindow::updatedDisplayTime()
   }
 
   QFontMetrics fm(timeLine->font());
-  int width = fm.width(timeLine->text()) + 10;
+  int width = fm.horizontalAdvance(timeLine->text()) + 10;
   timeLine->setFixedWidth(std::max(100, width));
 }
 
@@ -3184,7 +3183,7 @@ void MainWindow::on_pushButtonSaveLayout_clicked()
   if (file.open(QIODevice::WriteOnly))
   {
     QTextStream stream(&file);
-    stream << doc.toString() << endl;
+    stream << doc.toString() << Qt::endl;
   }
 }
 
@@ -3380,7 +3379,7 @@ PopupMenu::PopupMenu(QWidget* relative_widget, QWidget* parent)
 
 void PopupMenu::showEvent(QShowEvent*)
 {
-  QPoint p = _w->mapToGlobal({});
+  QPoint p = _w->mapToGlobal(QPoint(0, 0));
   QRect geo = _w->geometry();
   this->move(p.x() + geo.width(), p.y());
 }

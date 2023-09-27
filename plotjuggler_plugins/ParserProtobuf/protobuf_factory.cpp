@@ -1,7 +1,8 @@
 #include "protobuf_factory.h"
 
-#include <QSettings>
+#include <QFileDialog>
 #include <QMessageBox>
+#include <QSettings>
 
 #include "PlotJuggler/fmt/format.h"
 #include "PlotJuggler/svg_util.h"
@@ -33,10 +34,10 @@ ParserFactoryProtobuf::ParserFactoryProtobuf()
   if( !last_type.isEmpty() && combo_index != -1)
   {
     ui->comboBox->setCurrentIndex(combo_index);
-    onComboChanged(last_type);
+    onComboChanged(combo_index);
   }
 
-  connect( ui->comboBox, qOverload<const QString&>(&QComboBox::currentIndexChanged),
+  connect( ui->comboBox, qOverload<int>(&QComboBox::currentIndexChanged),
           this, &ParserFactoryProtobuf::onComboChanged );
 }
 
@@ -220,8 +221,10 @@ void ParserFactoryProtobuf::onRemoveInclude()
 }
 
 
-void ParserFactoryProtobuf::onComboChanged(const QString& text)
+void ParserFactoryProtobuf::onComboChanged(int index)
 {
+  auto comboBox = qobject_cast<QComboBox*>(sender());
+  const auto text = comboBox->itemText(index);
   auto descr_it = _loaded_file.descriptors.find(text);
   if( descr_it != _loaded_file.descriptors.end())
   {

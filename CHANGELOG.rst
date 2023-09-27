@@ -434,7 +434,7 @@ Changelog for package plotjuggler
 * fix compilation error
 * Some template types have an enum ItemType. MSVC fails with compilation (`#358 <https://github.com/PlotJuggler/PlotJuggler/issues/358>`_)
   error.
-* Add required Qt5::Network for DataStreamUDP (`#356 <https://github.com/PlotJuggler/PlotJuggler/issues/356>`_)
+* Add required Qt6::Network for DataStreamUDP (`#356 <https://github.com/PlotJuggler/PlotJuggler/issues/356>`_)
 * Contributors: Davide Faconti, Tobias Fischer, gabm
 
 3.0.4 (2020-12-04)

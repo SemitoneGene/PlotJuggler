@@ -31,7 +31,6 @@ public:
   {
     LINES,
     DOTS,
-    LINES_AND_DOTS,
     STICKS,
     STEPS
   };

@@ -69,7 +69,7 @@ private slots:
 
   void onRemoveInclude();
 
-  void onComboChanged(const QString &text);
+  void onComboChanged(int index);
 };
 
 

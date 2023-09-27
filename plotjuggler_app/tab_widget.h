@@ -29,7 +29,7 @@ public:
 
   void dragEnterEvent(QDragEnterEvent* ev) override
   {
-    if (ev->pos().y() > 43)
+    if (ev->position().toPoint().y() > 43)
     {
       ev->ignore();
       return;
@@ -58,7 +58,7 @@ public:
 
   void dragMoveEvent(QDragMoveEvent* ev) override
   {
-    if (ev->pos().y() > 43)
+    if (ev->position().toPoint().y() > 43)
     {
       ev->ignore();
       return;

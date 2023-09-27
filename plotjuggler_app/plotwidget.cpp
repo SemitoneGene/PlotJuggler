@@ -658,10 +658,6 @@ QDomElement PlotWidget::xmlSaveState(QDomDocument& doc) const
   {
     plot_el.setAttribute("style", "Lines");
   }
-  else if (curveStyle() == PlotWidgetBase::LINES_AND_DOTS)
-  {
-    plot_el.setAttribute("style", "LinesAndDots");
-  }
   else if (curveStyle() == PlotWidgetBase::DOTS)
   {
     plot_el.setAttribute("style", "Dots");
@@ -860,10 +856,6 @@ bool PlotWidget::xmlLoadState(QDomElement& plot_widget, bool autozoom)
     if (style == "Lines")
     {
       changeCurvesStyle(PlotWidgetBase::LINES);
-    }
-    else if (style == "LinesAndDots")
-    {
-      changeCurvesStyle(PlotWidgetBase::LINES_AND_DOTS);
     }
     else if (style == "Dots")
     {
@@ -1516,8 +1508,8 @@ void PlotWidget::on_pasteAction_triggered()
   QString clipboard_text = clipboard->text();
 
   QDomDocument doc;
-  bool valid = doc.setContent(clipboard_text);
-  if (!valid)
+  const auto result = doc.setContent(clipboard_text);
+  if (result)
   {
     return;
   }
@@ -1672,6 +1664,9 @@ bool PlotWidget::canvasEventFilter(QEvent* event)
       }
     }
     break;
+
+    default:
+      break;
 
   }  // end switch
 

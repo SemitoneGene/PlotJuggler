@@ -1,5 +1,8 @@
+cmake_minimum_required(VERSION 3.10.2)
 
 include_directories( ./  )
+
+find_package(Qt6 REQUIRED COMPONENTS OpenGL OpenGLWidgets Widgets)
 
 set( QWT_SRC
     qwt.h
@@ -191,13 +194,16 @@ set( QWT_SRC
     qwt_plot_opengl_canvas.cpp
     )
 
+include_directories(${Qt6OpenGL_INCLUDE_DIRS})
+
 add_library(plotjuggler_qwt STATIC ${QWT_SRC})
 
-target_link_libraries(plotjuggler_qwt
-    ${Qt5Widgets_LIBRARIES}
-    ${Qt5Concurrent_LIBRARIES}
-    ${Qt5Svg_LIBRARIES}
-    )
+target_link_libraries(plotjuggler_qwt 
+    PRIVATE 
+    Qt6::Widgets 
+    Qt6::OpenGL 
+    Qt6::OpenGLWidgets)
+
 target_compile_definitions(plotjuggler_qwt PUBLIC QWT_MOC_INCLUDE)
 #target_compile_definitions(plotjuggler_qwt PUBLIC QWT_DLL QWT_MAKEDLL )
 

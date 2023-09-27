@@ -62,11 +62,11 @@ inline bool CheckType(PlotAttribute attr, const QVariant& value)
   {
     case TEXT_COLOR:
     case COLOR_HINT:
-      return value.type() == QVariant::Color;
+      return value.typeId() == qMetaTypeId<QColor>();
     case ITALIC_FONTS:
-      return value.type() == QVariant::Bool;
+      return value.typeId() == qMetaTypeId<bool>();
     case TOOL_TIP:
-      return value.type() == QVariant::String;
+      return value.typeId() == qMetaTypeId<QString>();
   }
   return false;
 }
